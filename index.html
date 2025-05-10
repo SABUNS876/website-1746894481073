@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HTML Python CSS Website</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    color: #333;
+  }
+  header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+  main {
+    max-width: 700px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
+    padding: 2rem;
+  }
+  h1 {
+    margin-top: 0;
+  }
+  form {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  input[type="text"] {
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+  button {
+    background: #667eea;
+    border: none;
+    color: white;
+    padding: 0.7rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #5563c1;
+  }
+  #response {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: #4a4a4a;
+  }
+  @media (max-width: 400px) {
+    main {
+      margin: 1rem;
+      padding: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Simple HTML-Python CSS Website</h1>
+</header>
+<main>
+  <p>Enter your name to receive a greeting from Python backend:</p>
+  <form id="greetForm" onsubmit="submitForm(event)">
+    <label for="nameInput">Your Name:</label>
+    <input type="text" id="nameInput" name="name" placeholder="Enter name" required />
+    <button type="submit">Greet Me</button>
+  </form>
+  <div id="response"></div>
+</main>
+
+<script>
+  async function submitForm(event) {
+    event.preventDefault();
+    const name = document.getElementById('nameInput').value.trim();
+    if (!name) return;
+    const responseDiv = document.getElementById('response');
+    responseDiv.textContent = 'Loading...';
+    try {
+      const res = await fetch('/greet', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name })
+      });
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await res.json();
+      responseDiv.textContent = data.message;
+    } catch (err) {
+      responseDiv.textContent = 'Error: ' + err.message;
+    }
+  }
+</script>
+</body>
+</html>
+
+```
